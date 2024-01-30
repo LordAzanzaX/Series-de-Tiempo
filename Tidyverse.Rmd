@@ -118,6 +118,10 @@ head(pop)
 library(tidyverse)
 library(fable)
 library(tsibble)
+library(tibble)
+library(tidyr)
+library(fable)
+library(ggplot2)
 ```
 
 
@@ -207,4 +211,33 @@ pop_train %>%
   forecast(h="12 years") %>% 
   autoplot(pop_tidy) + geom_vline(xintercept = 2014, linetype="dashed", color="red") + ylab("Rural population(%)")
 ```
+
+```{r}
+install.packages("readxl")
+```
+
+
+```{r}
+library('readxl')
+```
+```{r}
+Salario<-read_xlsx("/Users/ADMIN/Desktop/R/SalarioMínimoHistórico.xlsx")
+Salario
+```
+
+```{r}
+correct_tidy<- Salario %>% 
+  as_tsibble(index= Year, key=`Salario mínimo real`)
+correct_tidy
+```
+```{r}
+library(magrittr)
+```
+
+```{r}
+correct_tidy %>% 
+  autoplot(correct_tidy)+
+  labs(y= "Year", title= "Evolución del salario mínimo real")
+```
+
 
