@@ -1,0 +1,43 @@
+---
+title: "Tasa de Desempleo"
+output: html_document
+date: "2024-03-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Definición de la problemática
+Una serie de tiempo de la tasa de desempleo, con datos desde el primer trimestre de 2005 hasta el primer trimestre de 2022, es una secuencia cronológica de mediciones trimestrales que reflejan el porcentaje de la fuerza laboral que está sin empleo y buscando activamente trabajo. Esta serie permite analizar cómo la tasa de desempleo ha fluctuado a lo largo del tiempo, identificando tendencias, cambios estructurales en el mercado de trabajo, y posibles patrones estacionales. Al centrarse en la variación trimestral, la serie proporciona una visión detallada de las dinámicas del mercado laboral en respuesta a cambios económicos, políticos, y sociales a medio plazo. Esto facilita a los analistas, formuladores de políticas, y otros interesados entender mejor los desafíos y oportunidades del mercado laboral, y ajustar sus estrategias y políticas de empleo de manera informada. La periodicidad trimestral ofrece un equilibrio entre la detección oportuna de cambios en el mercado laboral y la minimización del "ruido" o las variaciones que son demasiado cortoplacistas, permitiendo una evaluación precisa de las tendencias subyacentes en la tasa de desempleo.
+
+
+```{r cars}
+library(tsibble)
+library(fable)
+library(readxl)
+library(ggplot2)
+library(tidyquant)
+library(dplyr)
+library(forecast)
+library(ggplot2)
+library(broom)
+library(fabletools)
+library(EnvStats)
+library(plotly)
+library(tidyr)
+
+
+raw_data = read_xlsx(path = "/Users/ADMIN/Desktop/Tasa de Desempleo archivo.xlsx", sheet ="Datos", col_names = FALSE)
+head(raw_data, 100)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
