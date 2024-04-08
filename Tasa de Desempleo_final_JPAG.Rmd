@@ -1,0 +1,1091 @@
+---
+title: "Tasa de Desempleo"
+output: html_document
+date: "2024-03-05"
+---
+### Alumno: Jose Pablo Azanza Guitrón
+### Profesor: Daniel Francisco Nuño Alvarez
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1) Definición
+
+# Definición de la problemática
+Una serie de tiempo de la tasa de desempleo, con datos desde el primer trimestre de 2005 hasta el primer trimestre de 2022, es una secuencia cronológica de mediciones trimestrales que reflejan el porcentaje de la fuerza laboral que está sin empleo y buscando activamente trabajo. Esta serie permite analizar cómo la tasa de desempleo ha fluctuado a lo largo del tiempo, identificando tendencias, cambios estructurales en el mercado de trabajo, y posibles patrones estacionales. Al centrarse en la variación trimestral, la serie proporciona una visión detallada de las dinámicas del mercado laboral en respuesta a cambios económicos, políticos, y sociales a medio plazo. Esto facilita a los analistas, formuladores de políticas, y otros interesados entender mejor los desafíos y oportunidades del mercado laboral, y ajustar sus estrategias y políticas de empleo de manera informada. La periodicidad trimestral ofrece un equilibrio entre la detección oportuna de cambios en el mercado laboral y la minimización del "ruido" o las variaciones que son demasiado cortoplacistas, permitiendo una evaluación precisa de las tendencias subyacentes en la tasa de desempleo.
+
+### Razones para el Análisis de la Tasa de Desempleo:
+
+Salud Económica: La tasa de desempleo es un indicador clave de la salud económica de un país. Una tasa alta puede indicar debilidad económica, mientras que una tasa baja puede indicar fortaleza.
+
+Política Económica: Los responsables de la formulación de políticas utilizan la información sobre la tasa de desempleo para ajustar políticas económicas y laborales.
+
+Impacto Social: El desempleo puede tener un impacto significativo en el bienestar social y económico de los individuos y las comunidades. Analizar su evolución puede ayudar a comprender mejor este impacto y guiar políticas sociales.
+
+### Qué espero ver con este análisis
+Tendencias Temporales: Identificar tendencias a largo plazo en la tasa de desempleo, incluyendo ciclos económicos y cambios estructurales en el mercado laboral.
+
+Cambio Estacional: Detectar patrones estacionales en la tasa de desempleo que puedan repetirse cada año.
+
+Relación con otros Indicadores: Explorar la relación entre la tasa de desempleo y otros indicadores económicos, como el PIB y el IPC, para comprender mejor las interacciones dentro de la economía.
+
+### Resultados Esperados y su Utilidad
+Identificación de Tendencias: Obtener una comprensión clara de cómo ha evolucionado la tasa de desempleo a lo largo del tiempo, lo que puede ayudar a prever futuros cambios en el mercado laboral.
+
+Planificación y Política: Proporcionar información valiosa para la formulación de políticas económicas y laborales, así como para la planificación empresarial y personal.
+
+Impacto Social: Comprender mejor el impacto del desempleo en la sociedad y en el bienestar de las personas, lo que puede informar programas y políticas sociales dirigidas a mitigar sus efectos.
+
+### Conclusión
+El análisis de la tasa de desempleo como serie de tiempo es una herramienta poderosa para comprender la dinámica del mercado laboral y su impacto en la economía y la sociedad. Proporciona información valiosa para la formulación de políticas y la toma de decisiones tanto a nivel gubernamental como individual. Al identificar tendencias, patrones estacionales y relaciones con otros indicadores económicos, este análisis puede ayudar a anticipar cambios en el mercado laboral y diseñar estrategias para abordar el desempleo y sus efectos.
+
+# Fuentes de datos
+
+Reclutación de datos desde la página de Banxico para obtener la información de la tasa de desempleo con el tiempo, así como adaptación a otras fuentes de información.
+Link de consulta: https://www.banxico.org.mx/TablasWeb/informes-trimestrales/julio-septiembre-2021/8B802B2F-2B86-4CF4-A5E3-1BF7C442B18D.html
+
+
+```{r message=FALSE, warning=FALSE}
+library(tsibble)
+library(fable)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(forecast)
+library(ggplot2)
+library(broom)
+library(fabletools)
+library(EnvStats)
+library(plotly)
+library(tidyr)
+library(lubridate)
+library(feasts)
+library(ggExtra)
+library(tidyverse)
+```
+
+## Importar los datos
+
+
+```{r}
+data <- read_xlsx("/Users/ADMIN/Desktop/Tasa de Desempleo archivo.xlsx")
+head(data,80)
+```
+
+## Renombramos columnas 
+
+```{r}
+colnames(data) = c('date', 'value')
+data
+```
+
+## Periodicidad Mensual 
+
+
+```{r}
+data$date <- as.Date(data$date)
+data$date = seq(from = min(data$date), to = max(data$date), by = "1 month")
+data$date = yearmonth(data$date)
+data
+```
+
+## Tsibble
+
+```{r}
+data = as_tsibble(data, index=date, regular=TRUE)
+data
+```
+
+# 3) Análisis
+
+## Visualizamos la serie por primera vez
+
+```{r}
+grafica=feasts::autoplot(data) + ggtitle('Tasa de Desempleo por Mes') + ylab('Tasa de desempleo') + xlab('Fecha')
+grafica
+```
+
+La tasa de desempleo en México como podemos observar ha experimentado fluctuaciones y tendencias variables. Si bien no se puede generalizar completamente, se observa que la tasa de desempleo ha mostrado una tendencia a la baja durante períodos de crecimiento económico robusto y una tendencia al alza durante recesiones económicas.
+
+```{r}
+# para descargar
+#ggsave("grafica_INPC.png", plot = grafica, device = "jpg")
+
+```
+
+
+### Gráficas estacionales
+
+```{r}
+estacionalidad <- data %>% gg_season(value, labels = "both") +
+    ggtitle('Tasa de Desempleo') + ylab('Tendencia anual') + xlab('Mes')
+
+estacionalidad
+```
+
+La tasa de desempleo en México desde 2005 hasta la fecha actual no muestra patrones estacionales claros como otros indicadores económicos. En su lugar, refleja tendencias y fluctuaciones relacionadas con la salud general de la economía y los eventos macroeconómicos. Por ejemplo, durante períodos de crecimiento económico, la tasa de desempleo tiende a disminuir gradualmente, mientras que durante recesiones económicas, tiende a aumentar. En resumen, la tasa de desempleo está más influenciada por los ciclos económicos y los eventos económicos y políticos a gran escala que por factores estacionales.
+
+El 2010 comieza con un valor bajo y a mediados del año repunta, y al final vuelve a reacomodares
+Además en 2020 podemos observar el aumento de 3.5 a mas de 5 a causa del covid-19
+
+```{r}
+#ggsave("grafica_estacionalidad.png", plot = estacionalidad)
+```
+
+
+#### Gráfica Interactiva
+
+```{r}
+yearly_data_plot = data %>% gg_season(value, labels = "both") +
+    ggtitle('Tasa de Desempleo') + ylab('Tendencia anual') + xlab('Mes')
+
+ggplotly(yearly_data_plot)
+```
+
+### Sub gráficas estacionales
+
+```{r}
+subseries_plot = data %>% gg_subseries(value)
+ggplotly(subseries_plot)
+```
+
+Estacionalidad: La gráfica de la tasa de desempleo desde 2005 hasta la fecha actual muestra una falta de patrones estacionales evidentes. No hay fluctuaciones que se repitan consistentemente en los mismos meses cada año, como se podría observar en indicadores con estacionalidad más marcada.
+
+Tendencia: Sin embargo, se puede observar una tendencia general en la tasa de desempleo a lo largo del tiempo. Esta tendencia puede ser ascendente, descendente o estable, dependiendo de la situación económica y las políticas laborales en diferentes períodos. Por ejemplo, períodos de crecimiento económico suelen estar asociados con una disminución gradual de la tasa de desempleo, mientras que las recesiones económicas pueden resultar en un aumento del desempleo.
+
+### Gráfico de rezagos
+
+```{r}
+lags_plots = data %>% filter(year(date) > 2018) %>% gg_lag(value, geom = "point", lags = 1:12) + labs(x = "lag(Tasa de Desempleo, k)")
+
+suppressWarnings(ggplotly(lags_plots))
+```
+
+- Podemos observar la correlación temporal en algunas partes de la gráfica con algunos valores y sus valores temporales anteriores
+
+- El patrón similar en todos los paneles, desde el rezago 1 hasta el 12, sugiere que la autocorrelación es significativa y persiste incluso cuando se consideran valores pasados más lejanos.
+
+
+### Autocorrelación
+
+```{r}
+data %>% ACF(value, lag_max = 12)
+```
+
+```{r}
+autocorrelacion <- data %>% ACF(value, lag_max = 36) %>% autoplot() + labs(title='Autocorrelacion Tasa de Desempleot')
+autocorrelacion
+```
+
+- La gráfica de autocorrelación de la tasa de desempleo muestra una fuerte correlación positiva entre los valores en períodos consecutivos. Aunque la autocorrelación disminuye gradualmente con el tiempo, sigue siendo significativa incluso para períodos más alejados. Esto sugiere que los valores pasados pueden predecir útiles para los valores futuros. Al construir modelos de pronóstico, como los modelos ARIMA, es importante considerar esta autocorrelación para mejorar la precisión de las predicciones.
+
+```{r}
+#ggsave("grafica_autocorrelacion.png", plot = autocorrelacion)
+```
+
+
+## Estadística descriptiva
+
+### Medidas de tendencia central
+
+```{r}
+print(paste('fecha inicial', min(data$date)))
+print(paste('fecha final', max(data$date)))
+print(paste('observaciones', nrow(data)))
+print(paste('existen', sum(is.na(data)), 'datos faltantes'))
+```
+```{r}
+summary(data[, 'value'])
+```
+Podemos ver que el valor mínimo de la tasa de desempleo fue de 3.1 y el máximo de 6.15, lo que indica una variación considerable en el nivel de desempleo durante el período analizado. Por ejemplo, la diferencia entre el valor mínimo y máximo es de aproximadamente el doble (98.71%). Esto sugiere cambios significativos en las tasas de desempleo a lo largo de los años, lo que puede tener importantes implicaciones económicas y sociales.
+
+```{r}
+boxplot = data %>% 
+            mutate(year = year(date)) %>% 
+            ggplot(aes(x = as.factor(year), y = value)) + 
+            geom_boxplot() + 
+            xlab('Año') + 
+            ylab('Tasa de Desempleo')
+
+ggplotly(boxplot)
+```
+
+Podemos observar incrementos como habíamos observado antes en los años 2010 y 2020, que podremos observar a continuación al analizar los datos atípicos. habrá que estudiar por qué aumentó la tasa de desempleo específicamente en el 2010. Mientras que en 2020 podemos entender que fue debido al covid.
+
+### Medidas de dispersión
+
+```{r}
+sd(data$value)
+var(data$value)
+kurtosis(data$value)
+skewness(data$value)
+shapiro.test(data$value)
+```
+
+
+El resultado proporciona dos valores importantes: el estadístico W de Shapiro-Wilk y el valor p. El estadístico W cercano a 1 indica una mayor compatibilidad con una distribución normal, mientras que un valor p pequeño sugiere que los datos no siguen una distribución normal. En este caso, el valor p extremadamente pequeño sugiere que los datos de la tasa de desempleo no siguen una distribución normal según el test de Shapiro-Wilk.
+
+
+```{r}
+p <- ggplot(data, aes(x=date, y=value)) + 
+        geom_hline(yintercept = 70) + 
+        geom_hline(yintercept = 110) +
+        geom_point() + 
+        ggtitle('Tasa de desempleo mensual') + ylab('Value') + xlab('Fecha')
+
+ggMarginal(p, type='histogram', margins = 'y')
+```
+
+```{r}
+histogram = ggplot(data, aes(x = value)) +
+  geom_histogram( bins = 20, fill = "black", color = "black", alpha = 0.5) +
+  labs(title = "Histograma",
+       x = "Value",
+       y = "Densidad")
+
+ggplotly(histogram)
+```
+
+### Valores atípicos
+
+```{r}
+ttl_m_dlrs <- data %>% select('value')
+ttl_m_dlrs <- as.numeric(unlist(ttl_m_dlrs[,1]))
+
+summary(ttl_m_dlrs)[2] - 1.5*IQR(ttl_m_dlrs) >= summary(ttl_m_dlrs)[1]
+summary(ttl_m_dlrs)[5] + 1.5*IQR(ttl_m_dlrs) <= summary(ttl_m_dlrs)[6]
+
+summary(ttl_m_dlrs)[2] - 3*IQR(ttl_m_dlrs) >= summary(ttl_m_dlrs)[1]
+summary(ttl_m_dlrs)[5] + 3*IQR(ttl_m_dlrs) <= summary(ttl_m_dlrs)[6]
+```
+No indican valores atípicos.
+
+CÓDIGO PARA QUITAR LOS VALORES ATÍPICOS.
+
+# Calcula el primer y tercer cuartil, y el IQR para la columna 'value'
+Q1 <- quantile(data$value, 0.25, na.rm = TRUE)
+Q3 <- quantile(data$value, 0.75, na.rm = TRUE)
+IQR <- Q3 - Q1
+
+# Define los límites para considerar un valor como atípico
+lower_bound_strict <- Q1 - 3 * IQR
+upper_bound_strict <- Q3 + 3 * IQR
+
+# En lugar de filtrar y eliminar, reemplaza valores atípicos con NA
+data <- data %>%
+  mutate(value = ifelse(value < lower_bound_strict | value > upper_bound_strict, NA, value))
+
+# Ahora realiza la imputación de valores NA con el último valor conocido
+data <- data %>%
+  fill(value, .direction = "down")
+data
+
+
+```{r}
+p <- data %>%
+  as_tibble() %>%
+  mutate(years = year(date)) %>%
+  group_by(years) %>%
+  summarise(inpc = sum(value)) %>%
+  filter(years > 2007, years < 2024) %>%
+  mutate(change = (inpc / lag(inpc) - 1) * 100) %>%
+  ungroup() # Quitar el agrupamiento para calcular el cambio medio.
+
+mean_growth <- mean(p$change, na.rm = TRUE)
+mean_growth
+
+# Crear el gráfico
+ggplot(p, aes(x = years, y = change)) +
+  geom_line() +
+  geom_hline(yintercept = mean_growth, linetype = "dashed", color = "blue") +
+  geom_hline(yintercept = 0, color = "red") +
+  labs(title = 'Cambio porcentual por año', y = '% Cambio', x = 'Año')
+```
+
+Podemos observar que tiene un decremento, el cual promedia un 5.37%
+
+# 4) Pronósticos base
+
+## Define los periodos de prueba y entrenamiento
+
+```{r}
+train <- data %>% select(value) %>% filter_index("2008 Jan" ~ "2023 Jan")
+test <- data %>% select(value) %>% filter_index("2023 Feb" ~ "2024 Jan")
+train
+test
+h = 12
+```
+
+## Seasonal Naive
+
+```{r}
+# Ajustar modelo y hacer pronóstico
+models_fit <- train %>% 
+    model(`Seasonal naive` = SNAIVE(value))
+
+models_tst <- models_fit %>% forecast(h = h)  
+
+# Visualización con autoplot
+snaive_plot <- models_tst %>% autoplot(filter_index(data, "2005 Jan" ~ .)) +  
+    ggtitle('Seasonal Naive') + ylab('Tasa de desempleo') + xlab('Mes')
+
+snaive_plot
+```
+
+### Intervalos de predicción. 
+
+```{r}
+models_tst
+models_tst %>% hilo(level = c(80, 95))
+```
+
+La predicción hace sentido, aunque podemos observar que quizas no es la mejor manera de predecir valores próximos. A pesar de que toma en cuenta muchos aspectos, nos damos cuenta que hay un monton de cosas que pueden afectar a la tasa de desempleo que son imposibles de medir o tardaríamos un montón en juntar todas las variables exógenas que podrían afectarlo para intentar tener un modelo más preciso.
+
+### Errores de pronóstico
+
+
+
+```{r}
+accuracy(models_fit)
+```
+
+Se evaluó el modelo de predicción para la tasa de desempleo utilizando tres métricas principales:
+
+RMSE (Error Cuadrático Medio de la Raíz): 0.6194
+MAE (Error Absoluto Medio): 0.4391
+MAPE (Error Porcentual Absoluto Medio): -0.5018
+Estas métricas ofrecen una idea de la precisión del modelo en comparación con los valores reales de la tasa de desempleo.
+
+```{r}
+(models_fit %>% forecast(h = h) %>% accuracy(test))
+```
+RMSE: NaN
+MAE: NaN
+MAPE: NaN
+
+### Diagnostico de resiuales
+
+```{r}
+aug = augment(models_fit)
+aug
+```
+```{r}
+aug %>% pull(.resid) %>% mean(na.rm = TRUE)
+```
+
+```{r}
+aug %>% autoplot(.resid) + xlab("Mes") + ylab("") +
+  ggtitle("Residuales del método seasonal naïve")
+```
+
+```{r}
+aug %>%
+  ggplot(aes(x = .resid)) +
+  geom_histogram() +
+  ggtitle("Histograma de los residuales")
+```
+```{r}
+aug %>% ACF(.resid)
+```
+
+
+```{r}
+aug %>% ACF(.resid) %>% autoplot() + ggtitle("ACF of residuals")
+```
+
+```{r}
+train %>% 
+  model(SNAIVE(value)) %>% 
+  gg_tsresiduals()
+```
+
+Observamos rezagos en algunas partes de las gráficas y al mismo tiempo se observa esta correlación en algunas zonas. 
+
+### Test de Ljung-Box
+
+
+> La hipótesis nula de estas pruebas es que la serie en cuestión no está autocorrelacionada. En otras palabras, la H0 dice que la serie es ruido blanco. Si α es el nivel de significancia (el nivel máximo de error que estamos dispuestos a aceptar) y si el ¨p-value <α, entonces rechazamos H0, de lo contrario, no rechazamos la H0.
+
+```{r}
+aug %>% features(.resid, ljung_box, lag=12, dof=0)
+```
+
+# 5) Descomposición
+
+## Componentes y descomposición STL
+
+```{r}
+stl_model = data %>% dplyr::select(value) %>% stl(s.window = 'per')
+plot(stl_model,main = 'Descomposicón de la serie con STL')
+```
+
+La serie marca una perfecta tendencia a la alza.
+
+## Transformaciones y adjustes
+
+```{r}
+qqnorm(data$value)
+qqline(data$value)
+```
+
+Viendo los extremos de la gráfica, se nota una discrepancia entre los puntos y la línea de referencia, lo que sugiere una mayor incidencia de valores extremos en los datos en comparación con una distribución normal estándar. Este fenómeno se conoce como curtosis y refleja colas más pronunciadas en la distribución de los datos.
+
+
+# 6) Pronósticos base con STL y tranformación matemática (logarítmica)
+
+## STL Seasonal Naive
+
+```{r}
+models_fit <- train %>% 
+  model(stlf = decomposition_model(
+    STL(log(value) ~ trend(window = 12), robust = TRUE),
+    NAIVE(season_adjust)
+  ))
+models_tst <- models_fit %>% forecast(h = h)
+mape_sn <- (models_fit %>% forecast(h = h) %>% accuracy(test))$MAPE
+snaive_plot <- models_tst %>% autoplot(filter_index(data, "2005 Jan"~ "2022 Jan")) +
+    ggtitle('STL') + ylab('Tasa de Desempleo') + xlab('Mes')
+
+snaive_plot
+```
+
+```{r}
+models_fit <- train %>% 
+  model(
+    `Seasonal naive` = SNAIVE(value),
+    
+    stlf = decomposition_model(
+    STL(value ~ trend(window = 12), robust = TRUE),
+    NAIVE(season_adjust)),
+    
+    log_stlf = decomposition_model(
+            STL(log(value) ~ trend(window = 12), robust = TRUE),
+            NAIVE(season_adjust))
+  )
+
+models_tst <- models_fit %>% forecast(h = h)
+mape_sn <- (models_fit %>% forecast(h = h) %>% accuracy(test))$MAPE
+snaive_plot <- models_tst %>% autoplot(filter_index(data, "2005 Jan" ~ .), level = NULL) +
+    ggtitle('Otros modelos') + ylab('Tasa desempleo') + xlab('Mes')
+
+snaive_plot
+```
+
+```{r}
+accuracy(models_fit)
+```
+
+
+La gráfica revela que ninguno de los modelos está utilizando eficazmente la información de los datos para hacer predicciones precisas. Aunque los modelos STLF y log_STLF tienen resultados similares en términos de precisión, lo que indica una capacidad predictiva comparable. Sin embargo, dado que el modelo asume una estacionalidad consistente que no está presente en nuestros datos, se concluye que ninguno de los modelos evaluados es adecuado para nuestras necesidades.
+
+```{r}
+models_fit[1] %>% gg_tsresiduals()
+
+models_fit[2] %>% gg_tsresiduals()
+
+models_fit[3] %>% gg_tsresiduals()
+
+```
+
+AL observar las gráficas, vemos que la correlación negativa se va haciendo más visible en la segunda hoja un poco, y en la tercera un poco más notable.
+
+# 7) Regresión Lineal
+
+## Datos
+
+Para poder medir la Tasa de Desempleo es importante tomar en cuenta también la tasa de informalidad del país, es decir, el porcentaje de personas que trabajan de manera informal o no estan dados de alta como trabajo formal.
+
+```{r}
+tdi <- read_xlsx("/Users/ADMIN/Desktop/Tasa de informalidad.xlsx")
+tdi
+```
+```{r}
+colnames(tdi) = c('fecha', 'tdi')
+tdi
+```
+
+```{r}
+tdi$fecha <- as.Date(tdi$fecha)
+tdi$fecha = yearmonth(tdi$fecha)
+tdi
+```
+```{r}
+tdi = as_tsibble(tdi, index=fecha, regular=TRUE)
+tdi
+```
+
+### Separa entre entrenamiento y prueba
+
+```{r}
+train_tdi <- tdi %>% select(tdi) %>% filter_index("2007 Jan" ~ "2021 Jan")
+test_tdi <- tdi %>% select(tdi) %>% filter_index("2022 Feb" ~ "2024 Jan")
+train_tdi
+test_tdi
+```
+### Renombrar las columnas
+
+```{r}
+train_tdi = add_column(train_tdi, train$value) 
+colnames(train_tdi)[3] = "tdd" 
+colnames(train_tdi)[1] = "tdi"
+
+test_tdi = add_column(test_tdi, test$value)
+colnames(test_tdi)[3] = "tdd"
+colnames(test_tdi)[1] = "tdi"
+
+train_tdi
+test_tdi
+```
+### Gráfica de ambas series a traves del tiempo
+
+```{r}
+s <- train_tdi |>
+  pivot_longer(c(tdd, tdi), names_to="Series") |>
+  autoplot(value) +
+  labs(y = "value")
+s
+```
+
+```{r}
+#ggsave("grafica_dosseries.png", plot = s)
+```
+
+
+### Gráfica de disperción (correlación) entre ambas series
+
+```{r}
+train_tdi %>% ggplot(aes(x = tdi, y = tdd)) +
+  labs(y = "TDD",
+       x = "TDI") +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+Tendencia al alsa: Podemos ver que la línea de tendencia ascendente indica una relación positiva entre la tasa de informalidad y la tasa de desempleo, esto se debe a que cuando uno aumenta, el otro disminuye.
+
+Ajuste del Modelo: La línea azul es el resultado de un modelo de regresión lineal que intenta predecir la tasa de desempleo en función de la tasa de informalidad. El hecho de que la línea pase cerca de la mayoría de los puntos sugiere un buen ajuste del modelo lineal a estos datos.
+
+Fuerza de la Relación: Dado que los puntos están bastante agrupados alrededor de la línea de tendencia, podemos visualizar algo de dispersión.
+
+
+## Ajuste de regresión y reporte del modelo
+
+```{r}
+fit_lm <- train_tdi |>
+  model(tslm = TSLM(log(tdd) ~ tdi))
+
+report(fit_lm)
+accuracy(fit_lm)
+```
+
+### Tabla aumentada del ajuste del modelo
+
+```{r}
+augment(fit_lm)
+```
+
+### Valores calculados
+
+```{r}
+plot_lm = augment(fit_lm) |>
+  ggplot(aes(x = fecha)) +
+  geom_line(aes(y = tdd, colour = "reales")) +
+  geom_line(aes(y = .fitted, colour = "ajustados")) +
+  labs(y = NULL,
+    title = "TDD"
+  ) +
+  guides(colour = guide_legend(title = NULL))
+ggplotly(plot_lm)
+```
+
+
+### Analisis de residuales
+
+```{r}
+fit_lm %>% gg_tsresiduals()
+```
+
+Falta aún que el modelo tome los valores correctos, es decir, se puede mejorar porque aún no es tan precisa.
+
+Gráfica 1: errores en el tiempo para evaluar media y varianza.
+Gráfica 2: autocorrelación de errores: errores en el pasado afectan el valor actual.
+Gráfica 3: histograma de errores para verificar la normalidad, media sea 0 y sesgo sea 0.
+
+```{r}
+augment(fit_lm) %>% features(.innov, ljung_box, lag=12)
+```
+
+Este resultado indica que se ajustó un modelo de regresión lineal a los datos, y se realizó alguna prueba que resultó en un valor p de 0. Esto sugiere que al menos uno de los coeficientes del modelo es significativamente diferente de cero.
+
+### Gráfica de residuales contra valores ajustados.
+
+
+```{r}
+augment(fit_lm) %>% ggplot(aes(x=.fitted, y=.resid)) + geom_point() + labs(x="Fitted", y="Residuals")
+```
+
+### Pronósticos
+
+```{r}
+test_tdi[c("fecha","tdi")]
+```
+### Tabla de prónosticos
+
+```{r}
+fc_lm
+```
+
+### Crea una variable dummy de valores atípicos para tu serie de tiempo
+
+
+train_inf = train_inf %>%
+    mutate(crisisp = if_else(fecha >= as.Date("1982-11-01") & 
+                               fecha <= as.Date("1983-11-01"), 1, 0),
+           
+           crisisp1 = if_else(fecha >= as.Date("1986-06-01") & 
+                               fecha <= as.Date("1988-10-01"), 1, 0))
+
+test_inf = test_inf %>%
+    mutate(crisisp = if_else(fecha >= as.Date("1982-11-01") & 
+                               fecha <= as.Date("1983-11-01"), 1, 0),
+           
+           crisisp1 = if_else(fecha >= as.Date("1986-06-01") & 
+                               fecha <= as.Date("1988-10-01"), 1, 0))
+
+### Rezagos
+
+Usa los valores pasados cómo predictor de X. 
+Hipotesis: El inpc pasado influye en el futuro. Revisa la autocorrelación.
+
+El siguiente código muestra como calcular una variable con rezagos = 1
+
+```{r}
+train_tdi$lag1 = c(NA, train_tdi$tdd[1:length(train_tdi$tdd)-1])
+train_tdi
+
+test_tdi$lag1 = c(NA, test_tdi$tdd[1:length(test_tdi$tdd)-1])
+test_tdi
+```
+
+### fourier
+
+```{r}
+fit_lm <- train_tdi |>
+  model(tslm = TSLM(log(tdd) ~ tdi + tdi + fourier(K=6) ))
+
+report(fit_lm)
+accuracy(fit_lm)
+```
+
+## regresión lineal múltiple
+
+```{r}
+fit_lm <- train_tdi |>
+  model(tslm = TSLM(log(tdd) ~ trend() + season() + tdi + lag1))
+
+report(fit_lm)
+accuracy(fit_lm)
+```
+
+
+### Selección de variables
+
+```{r}
+glance(fit_lm) |>
+ select(r_squared, sigma2, AIC, AICc)
+```
+
+### Análisis de residuales
+
+```{r}
+fit_lm %>% gg_tsresiduals()
+```
+
+# 8) Suavización exponencial
+
+### Simple
+
+```{r}
+fit_es <- train |>
+  model(ETS(value ~ error("A") + trend("N") + season("N")))
+
+report(fit_es)
+```
+
+```{r}
+plot_lm = augment(fit_es) |>
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = value, colour = "reales")) +
+  geom_line(aes(y = .fitted, colour = "ajustados")) +
+  labs(y = NULL,
+    title = "TDD"
+  ) +
+  guides(colour = guide_legend(title = NULL))
+ggplotly(plot_lm)
+```
+
+
+### Con tendencia
+
+```{r}
+fit_es <- train |>
+  model(AAN = ETS(value ~ error("A") + trend("A") + season("N")))
+
+report(fit_es)
+```
+```{r}
+plot_lm = augment(fit_es) |>
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = value, colour = "reales")) +
+  geom_line(aes(y = .fitted, colour = "ajustados")) +
+  labs(y = NULL,
+    title = "TDD"
+  ) +
+  guides(colour = guide_legend(title = NULL))
+ggplotly(plot_lm)
+```
+
+```{r}
+fit_es <- train |>
+  model(Damped = ETS(value ~ error("A") + trend("Ad") + season("N")))
+
+report(fit_es)
+```
+
+```{r}
+plot_lm = augment(fit_es) |>
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = value, colour = "reales")) +
+  geom_line(aes(y = .fitted, colour = "ajustados")) +
+  labs(y = NULL,
+    title = "TDD"
+  ) +
+  guides(colour = guide_legend(title = NULL))
+ggplotly(plot_lm)
+```
+
+### Con estacionalidad
+
+```{r}
+fit_es <- train |>
+  model(AAA = ETS(value ~ error("A") + trend("A") + season("A")))
+
+report(fit_es)
+```
+```{r}
+plot_lm = augment(fit_es) |>
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = value, colour = "reales")) +
+  geom_line(aes(y = .fitted, colour = "ajustados")) +
+  labs(y = NULL,
+    title = "TDD"
+  ) +
+  guides(colour = guide_legend(title = NULL))
+ggplotly(plot_lm)
+```
+
+
+```{r}
+train
+```
+
+
+```{r}
+fit_es <- train |>
+  model(AAA = ETS(value ~ error("M") + trend("A") + season("A")))
+
+report(fit_es)
+```
+
+```{r}
+plot_lm = augment(fit_es) |>
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = value, colour = "reales")) +
+  geom_line(aes(y = .fitted, colour = "ajustados")) +
+  labs(y = NULL,
+    title = "TDD"
+  ) +
+  guides(colour = guide_legend(title = NULL))
+ggplotly(plot_lm)
+```
+
+### Selección del modelo
+
+```{r}
+fit_es <- train |>
+  model(ETS(value))
+
+report(fit_es)
+accuracy(fit_es)
+```
+
+
+```{r}
+components(fit_es) |>
+  autoplot()
+```
+
+### Pronostico, intervalo de predicción y análisis de residuales
+
+```{r}
+frcst = fit_es %>% forecast(h = h)
+
+fit_es %>%
+  forecast(h = h) %>%
+  autoplot(train)
+```
+```{r}
+frcst
+```
+
+```{r}
+frcst %>% hilo(level = c(80, 95))
+```
+
+
+```{r}
+accuracy(fit_es)
+```
+
+
+```{r}
+accuracy(fit_lm)
+```
+
+```{r}
+fit_es %>% gg_tsresiduals()
+```
+
+El modelo fit_es presenta un ajuste y precisión superiores en comparación con fit_lm. Esto se evidencia tanto en los valores de precisión como en la visualización de los residuos. Específicamente, al analizar el segundo gráfico de residuos, se observa la ausencia de correlación entre los residuos, lo que indica una mejora en el ajuste del modelo fit_es.
+
+# 9) Arima 
+
+## Estacionariedad y diferenciación
+
+```{r}
+train %>% ACF(value) %>% autoplot()
+```
+
+```{r}
+train %>% ACF(difference(value)) %>% autoplot()
+```
+
+```{r}
+train %>% features(value, unitroot_kpss)
+```
+
+
+El valor del estadístico KPSS es 1.651106 y el valor p correspondiente es 0.01. Con base en estos resultados, podemos concluir que la serie no es estacionaria, tanto de acuerdo a las gráficas como a la prueba unitaria KPSS.
+
+```{r}
+train %>% features(difference(value), unitroot_kpss)
+```
+
+Aceptamos la prueba de hipótesis que la serie es estacionaría.
+
+```{r}
+train %>% mutate(diff = difference(value)) %>% autoplot(diff)
+```
+
+Vemos que esta gráfica tiene reversión a la media, aunque su varianza no es constante.
+
+```{r}
+train %>% mutate(diff = difference(log(value))) %>% autoplot(diff)
+```
+
+```{r}
+train %>% gg_tsdisplay(plot_type = "partial")
+```
+
+## Selección del modelo
+
+```{r}
+train
+```
+
+
+```{r}
+fit_arima = train %>% model(ARIMA(log(value)))
+report(fit_arima)
+```
+
+```{r}
+accuracy(fit_arima)
+```
+
+```{r}
+accuracy(fit_es)
+```
+
+```{r}
+accuracy(fit_lm)
+```
+
+
+```{r}
+frcst = fit_es %>% forecast(h = h)
+
+fit_es %>%
+  forecast(h = h) %>%
+  autoplot(train)
+```
+
+```{r}
+frcst = fit_arima %>% forecast(h = h)
+
+fit_arima %>%
+  forecast(h = h) %>%
+  autoplot(train)
+```
+
+# 10) Regresión dinámica
+
+```{r}
+train_tdi = train_tdi %>% mutate(diff = difference(log(tdd)))
+
+#fit_din = train_tdi %>% model(TSLM(diff ~ trend() + season()))
+
+fit_din = train_tdi %>% model(TSLM(diff ~ tdi + trend() + season() + lag1 + tdi))
+
+report(fit_din) 
+
+fit_din %>% gg_tsresiduals()
+```
+Indica un mejor ajuste global, mayor proporción de la variabilidad explicada, y mayor significancia global. 
+
+```{r}
+test_tdi
+```
+
+## Selección del modelo
+
+```{r}
+fit_din = train_tdi %>% model(ARIMA(log(tdd) ~ trend() + season()  + tdi + lag1))
+
+last_known_value <- tail(train_tdi$tdd, 1)
+
+# Usar este valor para rellenar el primer NA en test_tdi$lag1
+test_tdi <- test_tdi %>%
+  mutate(lag1 = ifelse(is.na(lag1), last_known_value, lag1))
+
+report(fit_din)
+accuracy(fit_din)
+
+forecast_din = forecast(fit_din, new_data = test_tdi)
+
+```
+
+El modelo que incorpora diferenciación y una variable exógena muestra un desempeño superior tanto en ajuste a los datos como en eficiencia del modelo. La inclusión de esta variable no solo aumenta notablemente la precisión de las predicciones, evidenciada por la reducción de la desviación estándar, sino que también mejora la calidad global del modelo, como lo indica la disminución del criterio de información de Akaike corregido (AICc). Estos resultados sugieren que la variable exógena aporta información valiosa que facilita al modelo capturar de manera más efectiva la dinámica de los datos.
+
+```{r}
+fit_din %>% gg_tsresiduals()
+```
+
+Respecto a lo que observamos, los residuos a lo largo del tiempo, observamos en la parte superior que fluctúan alrededor de cero sin presentar patrones claros o tendencias evidentes, lo cual es prometedor. No se aprecian señales de heterocedasticidad, es decir, no hay indicios de una variación en la varianza a lo largo del tiempo.
+
+Al analizar la función de autocorrelación (ACF) en la gráfica de la izquierda en la sección inferior, notamos que la mayoría de las barras se encuentran dentro de los límites de confianza representados por las líneas punteadas azules. Esto sugiere que no hay autocorrelación significativa en los residuos, lo cual es un indicio positivo de un modelo bien ajustado.
+
+Por último, en el histograma de residuos en la gráfica de la derecha en la parte inferior, observamos una distribución que se asemeja a una distribución normal. La forma simétrica alrededor de cero indica que los residuos tienen una distribución aproximadamente normal.
+
+
+
+# 11) Compara los diferentes modelos y pronóstica
+
+## Selección
+
+```{r}
+fit_arima %>% forecast(h=h) %>% accuracy(test)
+```
+
+
+```{r}
+fit_arima = train %>% model(ARIMA(log(value)  ))
+report(fit_arima)
+accuracy(fit_arima)
+
+forecast_arima = forecast(fit_arima, new_data = test)
+```
+
+## Pronóstico
+
+```{r}
+fit_arima %>% gg_tsresiduals()
+```
+
+
+```{r}
+report_arima <- fit_arima %>% forecast(h=h) %>% accuracy(test) |>
+  select(ME,RMSE,MAE,MPE,MAPE)
+report_arima
+
+aic_arima <- glance(fit_arima) |>
+ select(sigma2, AIC, AICc)
+
+aic_arima
+```
+
+
+## Pronosticos finales
+
+```{r}
+fit_arima = data %>% model(ARIMA(log(value)))
+report(fit_arima)
+```
+
+```{r}
+forecast_arima = forecast(fit_arima, h = h) %>% 
+  as_tibble() %>% 
+  select(.mean, date)
+
+forecast_arima
+```
+
+```{r}
+augmentt = augment(fit_arima)
+plot = ggplot()+
+  geom_line(aes(x = augmentt$date, y = augmentt$value, colour = "reales")) +
+  geom_line(aes(x = augmentt$date, y = augmentt$.fitted, colour = "ajustados")) +
+  geom_line(aes(x = forecast_arima$date, y = forecast_arima$.mean, colour = "pronóstico"))+
+  labs(y = NULL,
+    title = "TDD"
+  ) +
+  guides(colour = guide_legend(title = NULL))
+ggplotly(plot)
+```
+
+```{r}
+res <- fit_arima %>% gg_tsresiduals()
+res
+```
+```{r}
+#ggsave("grafica_residuales.png",plot=res)
+```
+
+
+## SARIMA
+
+```{r}
+fit_sarima <- data %>% 
+  model(SARIMA = ARIMA(log(value) ~ pdq(1,1,1) + PDQ(1,1,1)))
+
+# Imprimir el reporte del modelo
+report(fit_sarima)
+```
+
+```{r}
+forecast_sarima = forecast(fit_sarima, h = h) %>% 
+  as_tibble() %>% 
+  select(.mean, date)
+
+forecast_sarima
+```
+
+```{r}
+fit_sarima %>% gg_tsresiduals()
+```
+La elección final es hacia el modelo ARIMA, ya que al decidir entre ARIMA y SARIMA, lo crucial es determinar si la serie temporal exhibe una estacionalidad notable. En caso de presentar estacionalidad, SARIMA suele ser la opción preferida, ya que está diseñada para capturar tanto la estructura autoregresiva y de media móvil como los patrones estacionales de los datos. Sin embargo, si la serie temporal carece de patrones estacionales claros, ARIMA puede ser adecuado y más fácil de ajustar.
+
+
+
+
