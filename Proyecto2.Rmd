@@ -1,0 +1,60 @@
+---
+title: "PROYECTO2"
+output: html_document
+date: "2024-04-18"
+---
+
+Indica las responsabilidades de cada uno de los integrantes del equipo:
+
+Mariana Ripoll: Transoformación Matematica, Complex Seasonality
+
+Diego Canales: ARIMA
+
+Jose Pablo Romo: Complex Seasonality
+
+Juan Pablo Barba: ETS, Transoformación Matematica
+
+Juan Pablo Dominguez: Garch
+
+Jose Pablo Azanza: Garch
+
+```{r}
+library(tidyquant)
+library(tidyverse)
+library(tsibble)
+library(fable)
+library(feasts)
+```
+
+```{r}
+#Importar datos
+data = tq_get("^GSPC", get="stock.prices", from = "2022-01-01", to = "2024-03-28") %>%
+  select(date, adjusted) 
+```
+
+```{r}
+data
+```
+
+```{r}
+#Determina el peso de cada acción derivado de la capitalización del mercado.
+index = tq_index("SP500") %>% select(symbol, weight)
+index = index %>% filter(symbol!="-")
+index
+sum(index$weight) 
+
+data = tq_get(index$symbol, get = "stock.prices", from = "2022-01-01", to = "2024-03-29") %>% select (symbol, date, adjusted)
+```
+
+```{r}
+# Obtén el sector correspondiente de cada acción.
+# Lee el archivo CSV
+Sector <- read_csv("datos_Sectores.csv")
+Sector
+```
+
+```{r}
+# Unir los dos conjuntos de datos
+data_final = left_join(index, Sector, by = c("symbol" = "Symbol"))
+data_final
+```

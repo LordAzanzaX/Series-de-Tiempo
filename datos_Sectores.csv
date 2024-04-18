@@ -1,0 +1,504 @@
+Symbol,Sector
+MMM,Industriales
+AOS,Industriales
+ABT,Cuidado de Salud
+ABBV,Cuidado de Salud
+ACN,Tecnologia Informatica
+ATVI,Servicios de Comunicacion
+ADM,Productos basicos
+ADBE,Tecnologia Informatica
+ADP,Tecnologia Informatica
+AAP,Consumo Discrecional
+AES,Utilidades
+AFL,Finanzas
+A,Cuidado de Salud
+APD,Materiales
+AKAM,Tecnologia Informatica
+ALK,Industriales
+ALB,Materiales
+ARE,Bienes Raices
+ALGN,Cuidado de Salud
+ALLE,Industriales
+LNT,Utilidades
+ALL,Finanzas
+GOOGL,Servicios de Comunicacion
+GOOG,Servicios de Comunicacion
+MO,Productos basicos
+AMZN,Consumo Discrecional
+AMCR,Materiales
+AMD,Tecnologia Informatica
+AEE,Utilidades
+AAL,Industriales
+AEP,Utilidades
+AXP,Finanzas
+AIG,Finanzas
+AMT,Bienes Raices
+AWK,Utilidades
+AMP,Finanzas
+ABC,Cuidado de Salud
+AME,Industriales
+AMGN,Cuidado de Salud
+APH,Tecnologia Informatica
+ADI,Tecnologia Informatica
+ANSS,Tecnologia Informatica
+AON,Finanzas
+APA,Energia
+AAPL,Tecnologia Informatica
+AMAT,Tecnologia Informatica
+APTV,Consumo Discrecional
+ACGL,Finanzas
+ANET,Tecnologia Informatica
+AJG,Finanzas
+AIZ,Finanzas
+T,Servicios de Comunicacion
+ATO,Utilidades
+ADSK,Tecnologia Informatica
+AZO,Consumo Discrecional
+AVB,Bienes Raices
+AVY,Materiales
+BKR,Energia
+BALL,Materiales
+BAC,Finanzas
+BBWI,Consumo Discrecional
+BAX,Cuidado de Salud
+BDX,Cuidado de Salud
+WRB,Finanzas
+BRK.B,Finanzas
+BBY,Consumo Discrecional
+BIO,Cuidado de Salud
+TECH,Cuidado de Salud
+BIIB,Cuidado de Salud
+BLK,Finanzas
+BK,Finanzas
+BA,Industriales
+BKNG,Consumo Discrecional
+BWA,Consumo Discrecional
+BXP,Bienes Raices
+BSX,Cuidado de Salud
+BMY,Cuidado de Salud
+AVGO,Tecnologia Informatica
+BR,Tecnologia Informatica
+BRO,Finanzas
+BF.B,Productos basicos
+CHRW,Industriales
+CDNS,Tecnologia Informatica
+CZR,Consumo Discrecional
+CPT,Bienes Raices
+CPB,Productos basicos
+COF,Finanzas
+CAH,Cuidado de Salud
+KMX,Consumo Discrecional
+CCL,Consumo Discrecional
+CARR,Industriales
+CTLT,Cuidado de Salud
+CAT,Industriales
+CBOE,Finanzas
+CBRE,Bienes Raices
+CDW,Tecnologia Informatica
+CE,Materiales
+CNC,Cuidado de Salud
+CNP,Utilidades
+CDAY,Tecnologia Informatica
+CF,Materiales
+CRL,Cuidado de Salud
+SCHW,Finanzas
+CHTR,Servicios de Comunicacion
+CVX,Energia
+CMG,Consumo Discrecional
+CB,Finanzas
+CHD,Productos basicos
+CI,Cuidado de Salud
+CINF,Finanzas
+CTAS,Industriales
+CSCO,Tecnologia Informatica
+C,Finanzas
+CFG,Finanzas
+CLX,Productos basicos
+CME,Finanzas
+CMS,Utilidades
+KO,Productos basicos
+CTSH,Tecnologia Informatica
+CL,Productos basicos
+CMCSA,Servicios de Comunicacion
+CMA,Finanzas
+CAG,Productos basicos
+COP,Energia
+ED,Utilidades
+STZ,Productos basicos
+CEG,Utilidades
+COO,Cuidado de Salud
+CPRT,Industriales
+GLW,Tecnologia Informatica
+CTVA,Materiales
+CSGP,Industriales
+COST,Productos basicos
+CTRA,Energia
+CCI,Bienes Raices
+CSX,Industriales
+CMI,Industriales
+CVS,Cuidado de Salud
+DHI,Consumo Discrecional
+DHR,Cuidado de Salud
+DRI,Consumo Discrecional
+DVA,Cuidado de Salud
+DE,Industriales
+DAL,Industriales
+XRAY,Cuidado de Salud
+DVN,Energia
+DXCM,Cuidado de Salud
+FANG,Energia
+DLR,Bienes Raices
+DFS,Finanzas
+DISH,Servicios de Comunicacion
+DIS,Servicios de Comunicacion
+DG,Consumo Discrecional
+DLTR,Consumo Discrecional
+D,Utilidades
+DPZ,Consumo Discrecional
+DOV,Industriales
+DOW,Materiales
+DTE,Utilidades
+DUK,Utilidades
+DD,Materiales
+DXC,Tecnologia Informatica
+EMN,Materiales
+ETN,Industriales
+EBAY,Consumo Discrecional
+ECL,Materiales
+EIX,Utilidades
+EW,Cuidado de Salud
+EA,Servicios de Comunicacion
+ELV,Cuidado de Salud
+LLY,Cuidado de Salud
+EMR,Industriales
+ENPH,Tecnologia Informatica
+ETR,Utilidades
+EOG,Energia
+EPAM,Tecnologia Informatica
+EQT,Energia
+EFX,Industriales
+EQIX,Bienes Raices
+EQR,Bienes Raices
+ESS,Bienes Raices
+EL,Productos basicos
+ETSY,Consumo Discrecional
+RE,Finanzas
+EVRG,Utilidades
+ES,Utilidades
+EXC,Utilidades
+EXPE,Consumo Discrecional
+EXPD,Industriales
+EXR,Bienes Raices
+XOM,Energia
+FFIV,Tecnologia Informatica
+FDS,Finanzas
+FAST,Industriales
+FRT,Bienes Raices
+FDX,Industriales
+FITB,Finanzas
+FRC,Finanzas
+FSLR,Tecnologia Informatica
+FE,Utilidades
+FIS,Tecnologia Informatica
+FISV,Tecnologia Informatica
+FLT,Tecnologia Informatica
+FMC,Materiales
+F,Consumo Discrecional
+FTNT,Tecnologia Informatica
+FTV,Industriales
+FOXA,Servicios de Comunicacion
+FOX,Servicios de Comunicacion
+BEN,Finanzas
+FCX,Materiales
+GRMN,Consumo Discrecional
+IT,Tecnologia Informatica
+GEHC,Cuidado de Salud
+GEN,Tecnologia Informatica
+GNRC,Industriales
+GD,Industriales
+GE,Industriales
+GIS,Productos basicos
+GM,Consumo Discrecional
+GPC,Consumo Discrecional
+GILD,Cuidado de Salud
+GL,Finanzas
+GPN,Tecnologia Informatica
+GS,Finanzas
+HAL,Energia
+HIG,Finanzas
+HAS,Consumo Discrecional
+HCA,Cuidado de Salud
+PEAK,Bienes Raices
+HSIC,Cuidado de Salud
+HSY,Productos basicos
+HES,Energia
+HPE,Tecnologia Informatica
+HLT,Consumo Discrecional
+HOLX,Cuidado de Salud
+HD,Consumo Discrecional
+HON,Industriales
+HRL,Productos basicos
+HST,Bienes Raices
+HWM,Industriales
+HPQ,Tecnologia Informatica
+HUM,Cuidado de Salud
+HBAN,Finanzas
+HII,Industriales
+IBM,Tecnologia Informatica
+IEX,Industriales
+IDXX,Cuidado de Salud
+ITW,Industriales
+ILMN,Cuidado de Salud
+INCY,Cuidado de Salud
+IR,Industriales
+INTC,Tecnologia Informatica
+ICE,Finanzas
+IP,Materiales
+IPG,Servicios de Comunicacion
+IFF,Materiales
+INTU,Tecnologia Informatica
+ISRG,Cuidado de Salud
+IVZ,Finanzas
+INVH,Bienes Raices
+IQV,Cuidado de Salud
+IRM,Bienes Raices
+JBHT,Industriales
+JKHY,Tecnologia Informatica
+J,Industriales
+JNJ,Cuidado de Salud
+JCI,Industriales
+JPM,Finanzas
+JNPR,Tecnologia Informatica
+K,Productos basicos
+KDP,Productos basicos
+KEY,Finanzas
+KEYS,Tecnologia Informatica
+KMB,Productos basicos
+KIM,Bienes Raices
+KMI,Energia
+KLAC,Tecnologia Informatica
+KHC,Productos basicos
+KR,Productos basicos
+LHX,Industriales
+LH,Cuidado de Salud
+LRCX,Tecnologia Informatica
+LW,Productos basicos
+LVS,Consumo Discrecional
+LDOS,Industriales
+LEN,Consumo Discrecional
+LNC,Finanzas
+LIN,Materiales
+LYV,Servicios de Comunicacion
+LKQ,Consumo Discrecional
+LMT,Industriales
+L,Finanzas
+LOW,Consumo Discrecional
+LUMN,Servicios de Comunicacion
+LYB,Materiales
+MTB,Finanzas
+MRO,Energia
+MPC,Energia
+MKTX,Finanzas
+MAR,Consumo Discrecional
+MMC,Finanzas
+MLM,Materiales
+MAS,Industriales
+MA,Tecnologia Informatica
+MTCH,Servicios de Comunicacion
+MKC,Productos basicos
+MCD,Consumo Discrecional
+MCK,Cuidado de Salud
+MDT,Cuidado de Salud
+MRK,Cuidado de Salud
+META,Servicios de Comunicacion
+MET,Finanzas
+MTD,Cuidado de Salud
+MGM,Consumo Discrecional
+MCHP,Tecnologia Informatica
+MU,Tecnologia Informatica
+MSFT,Tecnologia Informatica
+MAA,Bienes Raices
+MRNA,Cuidado de Salud
+MHK,Consumo Discrecional
+MOH,Cuidado de Salud
+TAP,Productos basicos
+MDLZ,Productos basicos
+MPWR,Tecnologia Informatica
+MNST,Productos basicos
+MCO,Finanzas
+MS,Finanzas
+MOS,Materiales
+MSI,Tecnologia Informatica
+MSCI,Finanzas
+NDAQ,Finanzas
+NTAP,Tecnologia Informatica
+NFLX,Servicios de Comunicacion
+NWL,Consumo Discrecional
+NEM,Materiales
+NWSA,Servicios de Comunicacion
+NWS,Servicios de Comunicacion
+NEE,Utilidades
+NKE,Consumo Discrecional
+NI,Utilidades
+NDSN,Industriales
+NSC,Industriales
+NTRS,Finanzas
+NOC,Industriales
+NCLH,Consumo Discrecional
+NRG,Utilidades
+NUE,Materiales
+NVDA,Tecnologia Informatica
+NVR,Consumo Discrecional
+NXPI,Tecnologia Informatica
+ORLY,Consumo Discrecional
+OXY,Energia
+ODFL,Industriales
+OMC,Servicios de Comunicacion
+ON,Tecnologia Informatica
+OKE,Energia
+ORCL,Tecnologia Informatica
+OGN,Cuidado de Salud
+OTIS,Industriales
+PCAR,Industriales
+PKG,Materiales
+PARA,Servicios de Comunicacion
+PH,Industriales
+PAYX,Tecnologia Informatica
+PAYC,Tecnologia Informatica
+PYPL,Tecnologia Informatica
+PNR,Industriales
+PEP,Productos basicos
+PKI,Cuidado de Salud
+PFE,Cuidado de Salud
+PCG,Utilidades
+PM,Productos basicos
+PSX,Energia
+PNW,Utilidades
+PXD,Energia
+PNC,Finanzas
+POOL,Consumo Discrecional
+PPG,Materiales
+PPL,Utilidades
+PFG,Finanzas
+PG,Productos basicos
+PGR,Finanzas
+PLD,Bienes Raices
+PRU,Finanzas
+PEG,Utilidades
+PTC,Tecnologia Informatica
+PSA,Bienes Raices
+PHM,Consumo Discrecional
+QRVO,Tecnologia Informatica
+PWR,Industriales
+QCOM,Tecnologia Informatica
+DGX,Cuidado de Salud
+RL,Consumo Discrecional
+RJF,Finanzas
+RTX,Industriales
+O,Bienes Raices
+REG,Bienes Raices
+REGN,Cuidado de Salud
+RF,Finanzas
+RSG,Industriales
+RMD,Cuidado de Salud
+RHI,Industriales
+ROK,Industriales
+ROL,Industriales
+ROP,Tecnologia Informatica
+ROST,Consumo Discrecional
+RCL,Consumo Discrecional
+SPGI,Finanzas
+CRM,Tecnologia Informatica
+SBAC,Bienes Raices
+SLB,Energia
+STX,Tecnologia Informatica
+SEE,Materiales
+SRE,Utilidades
+NOW,Tecnologia Informatica
+SHW,Materiales
+SBNY,Finanzas
+SPG,Bienes Raices
+SWKS,Tecnologia Informatica
+SJM,Productos basicos
+SNA,Industriales
+SEDG,Tecnologia Informatica
+SO,Utilidades
+LUV,Industriales
+SWK,Industriales
+SBUX,Consumo Discrecional
+STT,Finanzas
+STLD,Materiales
+STE,Cuidado de Salud
+SYK,Cuidado de Salud
+SIVB,Finanzas
+SYF,Finanzas
+SNPS,Tecnologia Informatica
+SYY,Productos basicos
+TMUS,Servicios de Comunicacion
+TROW,Finanzas
+TTWO,Servicios de Comunicacion
+TPR,Consumo Discrecional
+TRGP,Energia
+TGT,Consumo Discrecional
+TEL,Tecnologia Informatica
+TDY,Tecnologia Informatica
+TFX,Cuidado de Salud
+TER,Tecnologia Informatica
+TSLA,Consumo Discrecional
+TXN,Tecnologia Informatica
+TXT,Industriales
+TMO,Cuidado de Salud
+TJX,Consumo Discrecional
+TSCO,Consumo Discrecional
+TT,Industriales
+TDG,Industriales
+TRV,Finanzas
+TRMB,Tecnologia Informatica
+TFC,Finanzas
+TYL,Tecnologia Informatica
+TSN,Productos basicos
+USB,Finanzas
+UDR,Bienes Raices
+ULTA,Consumo Discrecional
+UNP,Industriales
+UAL,Industriales
+UPS,Industriales
+URI,Industriales
+UNH,Cuidado de Salud
+UHS,Cuidado de Salud
+VLO,Energia
+VTR,Bienes Raices
+VRSN,Tecnologia Informatica
+VRSK,Industriales
+VZ,Servicios de Comunicacion
+VRTX,Cuidado de Salud
+VFC,Consumo Discrecional
+VTRS,Cuidado de Salud
+VICI,Bienes Raices
+V,Tecnologia Informatica
+VMC,Materiales
+WAB,Industriales
+WBA,Productos basicos
+WMT,Productos basicos
+WBD,Servicios de Comunicacion
+WM,Industriales
+WAT,Cuidado de Salud
+WEC,Utilidades
+WFC,Finanzas
+WELL,Bienes Raices
+WST,Cuidado de Salud
+WDC,Tecnologia Informatica
+WRK,Materiales
+WY,Bienes Raices
+WHR,Consumo Discrecional
+WMB,Energia
+WTW,Finanzas
+GWW,Industriales
+WYNN,Consumo Discrecional
+XEL,Utilidades
+XYL,Industriales
+YUM,Consumo Discrecional
+ZBRA,Tecnologia Informatica
+ZBH,Cuidado de Salud
+ZION,Finanzas
+ZTS,Cuidado de Salud
